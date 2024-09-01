@@ -144,7 +144,7 @@ describe('OrangeHRM site End to End Testing', () => {
     cy.get('.orangehrm-card-container > .oxd-form > .oxd-form-actions > .oxd-button').as('saveButton_bloodGroup')
     cy.get('@saveButton_bloodGroup').click()
 
-    //Success message for saving gender
+    //Success message for saving blood group
     cy.waitTillVisible('.oxd-text--toast-message')
     cy.get('.oxd-text--toast-message').should("have.text", "Successfully Updated")
 
