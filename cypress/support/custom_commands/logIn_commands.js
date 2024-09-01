@@ -8,6 +8,8 @@ Cypress.Commands.add('Login', (userName, password ) => {
     cy.get("[type='submit']").as('login_button')
     
     //type username, password and click the login button
+    cy.log(userName)
+    cy.log(password)
     cy.get('@userName_field').type(userName)
     cy.get('@password_field').type(password)
     cy.get('@login_button').click()

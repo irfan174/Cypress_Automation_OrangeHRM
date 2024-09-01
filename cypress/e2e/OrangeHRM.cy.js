@@ -3,7 +3,7 @@ import * as variables from './variables/variables'
 describe('OrangeHRM site End to End Testing', () => {
 
   const employeeDataFile = "employeeData.json" // File to save employee data
-  const empUserName = variables.emp_fullName
+  const empUserName = variables.emp_userName
   const empPassword = variables.emp_password
 
   before(() => {
@@ -91,28 +91,49 @@ describe('OrangeHRM site End to End Testing', () => {
     cy.get('h5').should("have.text", "Directory")
 
     //Search by Employee name
-    cy.searchNewEmployee(variables.emp_firstName, variables.emp_fullName)
+    cy.searchNewEmployeeByName(variables.emp_firstName, variables.emp_fullName)
 
     //logout by Admin
-    cy.get("span img").click()
-    cy.get("li a").contains("Logout").click()
-    cy.waitTillVisible("h5")
+    cy.Logout()
 
-    // Log In Using Newly Created Employee Creds 
+    // Log In Using Newly Created Employee 
     cy.fixture(employeeDataFile).then((employee)=>{
-      //Login with employee creds.
+
       cy.Login(empUserName, empPassword)
       // Assert that the Newly Created Employee Full Name is showing beside the profile icon.
       cy.get("p.oxd-userdropdown-name").should("have.text",variables.emp_fullName)
+    })
+
+    //Update employee info
+    cy.get(':nth-child(3) > .oxd-main-menu-item').as('leftMenu_myInfo')
+    cy.get('@leftMenu_myInfo').click()
+
+    //Validate employee person details page
+    cy.waitTillVisible('.orangehrm-edit-employee-content > :nth-child(1) > .oxd-text--h6')
+
+    //Scroll down to Gender section
+    cy.get(':nth-child(5) > :nth-child(2) > :nth-child(2) > :nth-child(1) > :nth-child(1)').as('genderSection')
+    cy.get('@genderSection').scrollIntoView()
+
+    //Click on Male gender checkbox
+    cy.get(':nth-child(1) > :nth-child(2) > .oxd-radio-wrapper > label > .oxd-radio-input').as('maleGender_checkbox')
+    cy.get('@maleGender_checkbox').click()
+
+    //Click on Save button of this section
+    cy.get(':nth-child(1) > .oxd-form > .oxd-form-actions > .oxd-button').as('saveButton_gender')
+    cy.get('@saveButton_gender').click()
+
+    //Success message for saving gender
+    cy.waitTillVisible('.oxd-text--toast-message')
+    cy.get('.oxd-text--toast-message').should("have.text", "Successfully Updated")
 
 
+
+  
+})
+after(() => {
     
-  })
-
-  after(() => {
-    
-    // clear employeedata object after all tests are completed
-    cy.writeFile(`cypress/fixtures/${employeeDataFile}`,{});
-  })
+  // clear employeedata object after all tests are completed
+  cy.writeFile(`cypress/fixtures/${employeeDataFile}`,{});
 })
 })
