@@ -127,6 +127,30 @@ describe('OrangeHRM site End to End Testing', () => {
     cy.waitTillVisible('.oxd-text--toast-message')
     cy.get('.oxd-text--toast-message').should("have.text", "Successfully Updated")
 
+    //Scroll down to blood type section
+    cy.get('.orangehrm-card-container > .oxd-form > .oxd-form-row > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > .oxd-input-group__label-wrapper').as('bloodType_field')
+    cy.get('@bloodType_field').scrollIntoView()
+
+    //Click on the dropdown and select O+
+    cy.get('.orangehrm-card-container > .oxd-form > .oxd-form-row > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text > .oxd-select-text-input').as('bloodType_dropdown')
+    cy.get('@bloodType_dropdown').click()
+    cy.get('.oxd-select-dropdown').should('be.visible').contains('O+').click();
+
+    //Verify that the O+ is selected
+    cy.get('.orangehrm-card-container > .oxd-form > .oxd-form-row > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text > .oxd-select-text-input').as('bloodGroup_selected')
+    cy.get('@bloodGroup_selected').should('have.text', 'O+')
+
+    //Click Save button of this section
+    cy.get('.orangehrm-card-container > .oxd-form > .oxd-form-actions > .oxd-button').as('saveButton_bloodGroup')
+    cy.get('@saveButton_bloodGroup').click()
+
+    //Success message for saving gender
+    cy.waitTillVisible('.oxd-text--toast-message')
+    cy.get('.oxd-text--toast-message').should("have.text", "Successfully Updated")
+
+    //logout by Employee
+    cy.Logout()
+
 
 
   
