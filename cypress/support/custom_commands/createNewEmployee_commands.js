@@ -1,5 +1,14 @@
 Cypress.Commands.add('createNewEmployee', (firstName, lastName, userName, password ) => {
 
+    //locate the Employee id field and grab the employee id
+    cy.get('label').contains("Employee Id").parent().siblings('div').find('input').as('empID_field')
+    cy.get('@empID_field')
+    .invoke('val')
+    .then((value) => {
+      // Store the employee id value using alias
+      cy.wrap(value).as('empID');
+    })
+
     //locate first name, last name, login details checkbox, username, password, and confirmation password input fields and Save button using alias
     cy.get("input[name='firstName'").as('empFirstName_field') 
     cy.get("input[name='lastName']").as('empLastName_field') 

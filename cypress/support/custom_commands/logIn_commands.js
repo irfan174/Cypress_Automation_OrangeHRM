@@ -1,4 +1,4 @@
-Cypress.Commands.add('adminLogin', (userName, password ) => {
+Cypress.Commands.add('Login', (userName, password ) => {
 
     // Login using Admin credentials.
 
