@@ -148,7 +148,7 @@ describe('OrangeHRM site End to End Testing', () => {
     cy.waitTillVisible('.oxd-text--toast-message')
     cy.get('.oxd-text--toast-message').should("have.text", "Successfully Updated")
 
-    //logout by Employee
+    //logout by Newly created Employee
     cy.Logout()
 
 
